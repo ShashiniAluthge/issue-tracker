@@ -1,17 +1,15 @@
-import prisma from '@/prisma/client'
-import { Button, Table } from '@radix-ui/themes'
-
-import IssueStatusBadge from '../components/IssueStatusMap'
-import delay from 'delay';
-import IssueActions from './issueActions';
+import { Table } from '@radix-ui/themes'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import IssueActions from './issueActions'
 
 
 
-const IssuesPage = async () => {
-    const issues = await prisma.issue.findMany();
-    await delay(2000);
+const loading = () => {
+
+    const issues = [1, 2, 3, 4, 5]
     return (
-        <div >
+        <div>
             <IssueActions />
             <Table.Root variant='surface'>
                 <Table.Header>
@@ -24,24 +22,22 @@ const IssuesPage = async () => {
                 <Table.Body>
                     {
                         issues.map(issue => (
-                            <Table.Row key={issue.id}>
+                            <Table.Row key={issue}>
                                 <Table.Cell>
-                                    {issue.title}
+                                    <Skeleton />
                                     <div className='block md:hidden'>
-                                        <IssueStatusBadge status={issue.status} />
+                                        <Skeleton />
                                     </div>
                                 </Table.Cell>
-                                <Table.Cell className='hidden md:table-cell'><IssueStatusBadge status={issue.status} /></Table.Cell>
-                                <Table.Cell className='hidden md:table-cell'>{issue.createdAt.toDateString()}</Table.Cell>
+                                <Table.Cell className='hidden md:table-cell'><Skeleton /></Table.Cell>
+                                <Table.Cell className='hidden md:table-cell'><Skeleton /></Table.Cell>
                             </Table.Row>
                         ))
                     }
                 </Table.Body>
             </Table.Root>
-
         </div>
-
     )
 }
 
-export default IssuesPage
+export default loading

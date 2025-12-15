@@ -4,6 +4,7 @@ import { Button, Table } from '@radix-ui/themes'
 import IssueStatusBadge from '../components/IssueStatusMap'
 import delay from 'delay';
 import IssueActions from './issueActions';
+import Link from 'next/link';
 
 
 
@@ -26,7 +27,9 @@ const IssuesPage = async () => {
                         issues.map(issue => (
                             <Table.Row key={issue.id}>
                                 <Table.Cell>
-                                    {issue.title}
+                                    <Link href={`/issues/${issue.id}`}>
+                                        {issue.title}
+                                    </Link>
                                     <div className='block md:hidden'>
                                         <IssueStatusBadge status={issue.status} />
                                     </div>

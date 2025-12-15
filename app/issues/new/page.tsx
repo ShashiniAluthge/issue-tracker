@@ -1,16 +1,16 @@
 'use client'
-import { Button, Callout, Text, TextField } from '@radix-ui/themes'
-import React, { useMemo, useState } from 'react'
-import dynamic from 'next/dynamic'
-import 'easymde/dist/easymde.min.css'
-import { useForm, Controller } from 'react-hook-form'
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { createIssueSchema } from '@/app/validationSchemas'
-import { z } from "zod";
 import ErrorMessage from '@/app/components/ErrorMessage'
 import Spinner from '@/app/components/Spinner'
+import { createIssueSchema } from '@/app/validationSchemas'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button, Callout, TextField } from '@radix-ui/themes'
+import axios from 'axios'
+import 'easymde/dist/easymde.min.css'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from "zod"
 
 // Dynamically import SimpleMDE with SSR disabled
 const SimpleMdeReact = dynamic(() => import('react-simplemde-editor'), {
@@ -59,7 +59,7 @@ const NewIssuePage = () => {
                 </Callout.Text>
             </Callout.Root>
             }
-            <form className='space-y-3' onSubmit={onSubmit}>
+            <form className='space-y-3' onSubmit={onSubmit} suppressHydrationWarning>
                 <TextField.Root placeholder="Title" {...register('title')}>
                 </TextField.Root>
                 <ErrorMessage>

@@ -1,10 +1,10 @@
-import prisma from '@/prisma/client';
 import { Box, Flex, Grid } from '@radix-ui/themes';
 import delay from 'delay';
 import { notFound } from 'next/navigation';
 import EditIssueButton from './EditIssueButton';
 import IssueDetails from './IssueDetails';
 import DeleteIssueButton from './DeleteIssueButton';
+import prisma from '@/prisma/client';
 
 interface Props {
     params: Promise<{ id: string }>;
@@ -12,10 +12,19 @@ interface Props {
 const IssueDetailPage = async ({ params }: Props) => {
     const { id } = await params;
 
-    // if (typeof id !== 'number') notFound();
+    const issueId = parseInt(id);
+
+    //if (typeof id !== 'number') notFound();
+
+    // Check if the parsed id is a valid number
+    if (isNaN(issueId)) {
+        notFound();
+    }
+
+
 
     const issue = await prisma.issue.findUnique({
-        where: { id: parseInt(id) }
+        where: { id: issueId }
     })
 
     if (!issue)

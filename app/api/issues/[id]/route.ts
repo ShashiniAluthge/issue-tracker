@@ -30,8 +30,25 @@ export async function PATCH
         }
     }
     )
-    // Instead of manually converting dates, use this:
+
     return NextResponse.json(JSON.parse(JSON.stringify(updatedIssue)));
 
 
+}
+
+export async function DELETE
+    (request: NextRequest, { params }: Props) {
+    const { id } = await params
+
+    const issue = await prisma.issue.findUnique({
+        where: { id: parseInt(id) }
+    })
+
+    if (!issue) return NextResponse.json({ error: 'Invalid issue' }, { status: 404 })
+
+    await prisma.issue.delete({
+        where: { id: parseInt(id) }
+    })
+
+    return NextResponse.json({})
 }

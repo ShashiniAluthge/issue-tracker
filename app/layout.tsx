@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import NavBar from "./NavBar";
 import { Theme, } from "@radix-ui/themes";
 import AuthProvider from "./auth/Provider";
+import QueryClientProvider from "./QueryClientProvider";
 
 
 // const geistSans = Geist({
@@ -39,17 +40,16 @@ export default function RootLayout({
       <body
         className={inter.variable}
       >
-        <AuthProvider>
-          <Theme accentColor="violet">
-
-            <NavBar />
-            <main className="p-5">
-              {children}
-            </main>
-
-
-          </Theme>
-        </AuthProvider>
+        <QueryClientProvider>
+          <AuthProvider>
+            <Theme accentColor="violet">
+              <NavBar />
+              <main className="p-5">
+                {children}
+              </main>
+            </Theme>
+          </AuthProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );

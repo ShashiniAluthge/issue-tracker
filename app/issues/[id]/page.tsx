@@ -7,6 +7,7 @@ import DeleteIssueButton from './DeleteIssueButton';
 import prisma from '@/prisma/client';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/app/auth/authOptions';
+import AssigneeSelect from './AssigneeSelect';
 
 interface Props {
     params: Promise<{ id: string }>;
@@ -44,12 +45,15 @@ const IssueDetailPage = async ({ params }: Props) => {
             </Box>
 
             {session &&
-                (<Box>
-                    <Flex direction={'column'} gap={'4'}>
-                        <EditIssueButton issueId={issue.id} />
-                        <DeleteIssueButton issueId={issue.id} />
-                    </Flex>
-                </Box>)
+                (
+                    <Box>
+                        <Flex direction={'column'} gap={'4'}>
+                            <AssigneeSelect />
+                            <EditIssueButton issueId={issue.id} />
+                            <DeleteIssueButton issueId={issue.id} />
+                        </Flex>
+                    </Box>
+                )
             }
 
         </Grid>

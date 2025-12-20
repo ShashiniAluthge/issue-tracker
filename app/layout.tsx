@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NavBar from "./NavBar";
 import { Theme, } from "@radix-ui/themes";
+import AuthProvider from "./auth/Provider";
 
 
 // const geistSans = Geist({
@@ -38,16 +39,17 @@ export default function RootLayout({
       <body
         className={inter.variable}
       >
-        <Theme accentColor="violet">
+        <AuthProvider>
+          <Theme accentColor="violet">
 
-          <NavBar />
-          <main className="p-5">
-            {children}
-          </main>
+            <NavBar />
+            <main className="p-5">
+              {children}
+            </main>
 
 
-        </Theme>
-
+          </Theme>
+        </AuthProvider>
       </body>
     </html>
   );

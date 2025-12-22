@@ -44,8 +44,14 @@ const IssuesPage = async ({ searchParams }: Props) => {
     // console.log('4. Filtered status (used in query):', status);
     // console.log('5. Where clause:', status ? { status } : {});
 
+    const orderBy = columns.map(column => column.value).includes(resolvedParams.orderBy)
+        ?
+        { [resolvedParams.orderBy]: 'asc' }
+        : undefined
+
     const issues = await prisma.issue.findMany({
-        where: status ? { status } : {} // Empty where clause shows all
+        where: status ? { status } : {},// Empty where clause shows all
+        orderBy
     });
 
     // console.log('6. Number of issues found:', issues.length);

@@ -1,9 +1,8 @@
 import Image from "next/image";
+import Pagination from "./components/Pagination";
 
 export default function Home() {
   return (
-    <main>
-      <h1 className="text-3xl font-bold ">Hello, Next.js!</h1>
-    </main>
+    <Pagination itemCount={100} pageSize={10} currentPage={10} />
   );
 }

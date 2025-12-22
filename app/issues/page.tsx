@@ -3,14 +3,30 @@ import prisma from '@/prisma/client';
 import { Table } from '@radix-ui/themes';
 import IssueActions from './issueActions';
 import { Status } from '../generated/prisma/enums';
+import { Issue } from '../generated/prisma/client';
+import NextLink from 'next/link'
+import { ArrowUpIcon } from '@radix-ui/react-icons';
 
 interface Props {
-    searchParams: Promise<{ status?: Status }> // Changed to Promise
+    searchParams: Promise<{
+        status?: Status,
+        orderBy: keyof Issue
+    }> // Changed to Promise
 }
 
 const IssuesPage = async ({ searchParams }: Props) => {
     // await the searchParams Promise
     const resolvedParams = await searchParams;
+
+    const columns: {
+        lable: string;
+        value: keyof Issue;
+        className?: string;
+    }[] = [
+            { lable: 'Issue', value: 'title' },
+            { lable: 'Status', value: 'status', className: "hidden md:table-cell" },
+            { lable: 'Created', value: 'createdAt', className: "hidden md:table-cell" }
+        ]
 
 
     // console.log('=== IssuesPage Debug ===');
@@ -32,13 +48,13 @@ const IssuesPage = async ({ searchParams }: Props) => {
         where: status ? { status } : {} // Empty where clause shows all
     });
 
-    console.log('6. Number of issues found:', issues.length);
-    console.log('7. Issues:', issues.map(i => ({
-        id: i.id,
-        title: i.title,
-        status: i.status
-    })));
-    console.log('=== End Debug ===\n');
+    // console.log('6. Number of issues found:', issues.length);
+    // console.log('7. Issues:', issues.map(i => ({
+    //     id: i.id,
+    //     title: i.title,
+    //     status: i.status
+    // })));
+    // console.log('=== End Debug ===\n');
 
     return (
         <div>
@@ -47,13 +63,15 @@ const IssuesPage = async ({ searchParams }: Props) => {
             <Table.Root variant='surface'>
                 <Table.Header>
                     <Table.Row>
-                        <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell className='hidden md:table-cell'>
-                            Status
-                        </Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell className='hidden md:table-cell'>
-                            Created
-                        </Table.ColumnHeaderCell>
+                        {columns.map((column) => (
+                            <Table.ColumnHeaderCell key={column.value}>
+                                <NextLink href={{
+                                    query: { ...resolvedParams, orderBy: column.value }
+                                }
+                                }>{column.lable}</NextLink>
+                                {column.value === resolvedParams.orderBy && <ArrowUpIcon className='inline' />}
+                            </Table.ColumnHeaderCell>
+                        ))}
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>

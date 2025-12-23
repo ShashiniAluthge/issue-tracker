@@ -11,12 +11,11 @@ import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from "zod"
-import SimpleMdeReact from 'react-simplemde-editor'
 
-// Dynamically import SimpleMDE with SSR disabled
-// const SimpleMdeReact = dynamic(() => import('react-simplemde-editor'), {
-//     ssr: false,
-// })
+//Dynamically import SimpleMDE with SSR disabled
+const SimpleMdeReact = dynamic(() => import('react-simplemde-editor'), {
+    ssr: false,
+})
 
 
 
@@ -74,11 +73,11 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
                 <Controller
                     name='description'
                     control={control}
-                    defaultValue={issue?.description}
+                    defaultValue={issue?.description || ''}
                     render={({ field }) => (
                         <SimpleMdeReact
                             options={simpleMdeOptions}
-                            value={field.value}
+                            value={field.value || ''}
                             onChange={field.onChange}
                         />
                     )}
@@ -86,7 +85,12 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
                 <ErrorMessage>
                     {errors.description?.message}
                 </ErrorMessage>
-                <Button disabled={isSubmitting}>{issue ? 'Update Issue' : 'Submit New Issue '}{' '}{isSubmitting && <Spinner />}</Button>
+                <Button
+                    disabled={isSubmitting}
+                    style={{ cursor: 'pointer' }}
+                >
+                    {issue ? 'Update Issue' : 'Submit New Issue '}{' '}{isSubmitting && <Spinner />}
+                </Button>
             </form>
         </div>
     )

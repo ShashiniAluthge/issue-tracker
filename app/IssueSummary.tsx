@@ -17,7 +17,7 @@ const IssueSummary = ({ open, inProgress, closed }: Props) => {
     ]
 
     return (
-        <Flex gap={'6'}>
+        <Flex gap={'6'} direction={{ initial: 'column', sm: 'row' }}>
             {containers.map(container => (
                 <Card key={container.lable} >
                     <Flex direction={'column'} gap={'2'}>
